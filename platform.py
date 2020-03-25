@@ -13,14 +13,11 @@
 # limitations under the License.
 
 from os.path import isfile, join
-from platform import system
 
 from platformio.managers.platform import PlatformBase
-from platformio.util import get_systype
 
 
 class ChipsalliancePlatform(PlatformBase):
-
     def get_boards(self, id_=None):
         result = PlatformBase.get_boards(self, id_)
         if not result:
@@ -34,32 +31,32 @@ class ChipsalliancePlatform(PlatformBase):
 
     def _add_default_debug_tools(self, board):
         debug = board.manifest.get("debug", {})
-        upload_protocols = board.manifest.get("upload",
-                                              {}).get("protocols", [])
+        upload_protocols = board.manifest.get("upload", {}).get("protocols", [])
         if "tools" not in debug:
-            debug['tools'] = {}
+            debug["tools"] = {}
 
         tools = ("digilent-hs1", "ftdi")
         for tool in tools:
-            if tool not in upload_protocols or tool in debug['tools']:
+            if tool not in upload_protocols or tool in debug["tools"]:
                 continue
             server_args = ["-s", "$PACKAGE_DIR/share/openocd/scripts"]
             fw_dir = self.get_package_dir("riscv-fw-infrastructure")
-            board_cfg = join(fw_dir, "WD-Firmware", "board", board.get(
-                "debug.openocd_config", ""))
+            board_cfg = join(
+                fw_dir, "WD-Firmware", "board", board.get("debug.openocd_config", "")
+            )
             if isfile(board_cfg):
                 server_args.extend(["-f", board_cfg])
             else:
                 assert "Unknown debug configuration", board.id
-            debug['tools'][tool] = {
+            debug["tools"][tool] = {
                 "server": {
                     "package": "tool-openocd-riscv",
                     "executable": "bin/openocd",
-                    "arguments": server_args
+                    "arguments": server_args,
                 },
                 "onboard": tool in debug.get("onboard_tools", []),
-                "init_cmds": debug.get("init_cmds", None)
+                "init_cmds": debug.get("init_cmds", None),
             }
 
-        board.manifest['debug'] = debug
+        board.manifest["debug"] = debug
         return board
