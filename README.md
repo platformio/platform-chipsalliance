@@ -1,6 +1,6 @@
 # chipsalliance: development platform for [PlatformIO](http://platformio.org)
 [![Build Status](https://travis-ci.org/platformio/platform-chipsalliance.svg?branch=develop)](https://travis-ci.org/platformio/platform-chipsalliance)
-[![Build status](https://ci.appveyor.com/api/projects/status/pm59mq539ttp51hd/branch/develop?svg=true)](https://ci.appveyor.com/project/ivankravets/platform-chipsalliance/branch/develop)
+[![Build status](https://ci.appveyor.com/api/projects/status/tg3exyn42wwjhoc8/branch/develop?svg=true)](https://ci.appveyor.com/project/ivankravets/platform-chipsalliance/branch/develop)
 
 chipsalliance brings the power of open source and software automation to the semiconductor industry, making it possible to develop new hardware faster and more affordably than ever before. 
 
