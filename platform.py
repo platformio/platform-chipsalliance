@@ -41,13 +41,8 @@ class ChipsalliancePlatform(PlatformBase):
                 continue
             server_args = ["-s", "$PACKAGE_DIR/share/openocd/scripts"]
             fw_dir = join("$PROJECT_CORE_DIR", "packages", "riscv-fw-infrastructure")
-            board_cfg = join(
-                fw_dir, "WD-Firmware", "board", board.get("debug.openocd_config", "")
-            )
-            if isfile(board_cfg):
-                server_args.extend(["-f", board_cfg])
-            else:
-                assert "Unknown debug configuration", board.id
+            server_args.extend(["-f", join(fw_dir, "WD-Firmware", "board", board.get(
+                "build.variant", ""), board.get("debug.openocd_config", ""))])
             debug["tools"][tool] = {
                 "server": {
                     "package": "tool-openocd-riscv",
