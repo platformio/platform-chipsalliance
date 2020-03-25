@@ -55,7 +55,6 @@ class ChipsalliancePlatform(PlatformBase):
                     "arguments": server_args,
                 },
                 "onboard": tool in debug.get("onboard_tools", []),
-                "init_cmds": debug.get("init_cmds", None),
             }
 
         board.manifest["debug"] = debug
