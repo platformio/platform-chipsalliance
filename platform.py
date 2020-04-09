@@ -40,7 +40,7 @@ class ChipsalliancePlatform(PlatformBase):
             if tool not in upload_protocols or tool in debug["tools"]:
                 continue
             server_args = ["-s", "$PACKAGE_DIR/share/openocd/scripts"]
-            fw_dir = join("$PROJECT_CORE_DIR", "packages", "riscv-fw-infrastructure")
+            fw_dir = join(self.config.get_optional_dir("core"), "packages", "riscv-fw-infrastructure")
             server_args.extend(["-f", join(fw_dir, "WD-Firmware", "board", board.get(
                 "build.variant", ""), board.get("debug.openocd_config", ""))])
             debug["tools"][tool] = {
