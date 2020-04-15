@@ -35,22 +35,37 @@ class ChipsalliancePlatform(PlatformBase):
         if "tools" not in debug:
             debug["tools"] = {}
 
-        tools = ("digilent-hs1", "ftdi")
+        tools = ("digilent-hs1", "ftdi","jtag_vpi")
         for tool in tools:
             if tool not in upload_protocols or tool in debug["tools"]:
                 continue
-            server_args = ["-s", "$PACKAGE_DIR/share/openocd/scripts"]
-            fw_dir = join(self.config.get_optional_dir("core"), "packages", "riscv-fw-infrastructure")
-            server_args.extend(["-f", join(fw_dir, "WD-Firmware", "board", board.get(
-                "build.variant", ""), board.get("debug.openocd_config", ""))])
-            debug["tools"][tool] = {
-                "server": {
-                    "package": "tool-openocd-riscv",
-                    "executable": "bin/openocd",
-                    "arguments": server_args,
-                },
-                "onboard": tool in debug.get("onboard_tools", []),
-            }
-
+            if tool == "jtag_vpi":
+                core_dir = self.config.get_optional_dir("core")
+                package_dir = join(core_dir, "packages", "riscv-fw-infrastructure")
+                board_dir = join(package_dir, "WD-Firmware", "board", board.get("build.variant", ""))
+                server_args = ["-s", board_dir]
+                server_args.extend(["-f", board.get("debug.openocd_config", "")])
+                debug["tools"][tool] = {
+                    "server": {
+                        "package": "tool-openocd-riscv",
+                        "executable": "%s/openocd" % board_dir, # openocd-riscv doesn't support jtag_vpi
+                        "arguments": server_args
+                    },
+                    "onboard": True
+                }
+            else:
+                server_args = ["-s", "$PACKAGE_DIR/share/openocd/scripts"]
+                core_dir = self.config.get_optional_dir("core")
+                package_dir = join(core_dir, "packages", "riscv-fw-infrastructure")
+                board_dir = join(package_dir, "WD-Firmware", "board", board.get("build.variant", ""))
+                server_args.extend(["-f",join(board_dir, board.get("debug.openocd_config", ""))])
+                debug["tools"][tool] = {
+                    "server": {
+                        "package": "tool-openocd-riscv",
+                        "executable": "bin/openocd",
+                        "arguments": server_args
+                    },
+                    "onboard": tool in debug.get("onboard_tools", []),
+                }
         board.manifest["debug"] = debug
         return board

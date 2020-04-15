@@ -9,7 +9,7 @@
       ]
     ],
     "mabi": "ilp32",
-    "march": "rv32imac",
+    "march": "rv32i",
     "mcmodel": "medlow",
     "variant": "nexys_a7_swerv_eh1"
   },
@@ -17,6 +17,7 @@
     "onboard_tools": [
       "digilent-hs1"
     ],
+    "svd_path": "SWERVOLF.svd",
     "openocd_config": "swervolf_nexys_debug.cfg"
   },
   "frameworks": [],

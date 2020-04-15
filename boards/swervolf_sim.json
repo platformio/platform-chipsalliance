@@ -1,0 +1,28 @@
+{
+  "build": {
+    "f_cpu": "320000000L",
+    "mabi": "ilp32",
+    "march": "rv32i",
+    "mcmodel": "medlow",
+    "variant": "verilator_swervolf"
+  },
+  "debug": {
+    "onboard_tools": [
+      "jtag_vpi"
+    ],
+    "svd_path": "SWERVOLF.svd",
+    "openocd_config": "swervolf_sim.cfg"
+  },
+  "frameworks": [],
+  "name": "Verilator SweRVolf simulation",
+  "upload": {
+    "maximum_ram_size": 1216512,
+    "maximum_size": 16777216,
+    "protocols": [
+      "jtag_vpi"
+    ],
+    "protocol": "jtag_vpi"
+  },
+  "url": "https://github.com/chipsalliance/Cores-SweRVolf",
+  "vendor": "Chips Alliance"
+}
