@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from os.path import isfile, join
+from os.path import join
 
 from platformio.managers.platform import PlatformBase
 
@@ -31,25 +31,75 @@ class ChipsalliancePlatform(PlatformBase):
 
     def _add_default_debug_tools(self, board):
         debug = board.manifest.get("debug", {})
-        upload_protocols = board.manifest.get("upload", {}).get("protocols", [])
         if "tools" not in debug:
             debug["tools"] = {}
 
-        tools = ("digilent-hs1", "ftdi")
+        tools = (
+            "digilent-hs1",
+            "olimex-arm-usb-tiny-h",
+            "olimex-arm-usb-ocd-h",
+            "olimex-arm-usb-ocd",
+            "olimex-jtag-tiny",
+            "verilator",
+        )
         for tool in tools:
-            if tool not in upload_protocols or tool in debug["tools"]:
+            if tool in debug["tools"]:
                 continue
-            server_args = ["-s", "$PACKAGE_DIR/share/openocd/scripts"]
-            fw_dir = join("$PROJECT_CORE_DIR", "packages", "riscv-fw-infrastructure")
-            server_args.extend(["-f", join(fw_dir, "WD-Firmware", "board", board.get(
-                "build.variant", ""), board.get("debug.openocd_config", ""))])
+            server_args = [
+                "-s",
+                join(
+                    self.get_package_dir("framework-wd-riscv-sdk"),
+                    "board",
+                    board.get("build.variant", ""),
+                ),
+                "-s",
+                "$PACKAGE_DIR/share/openocd/scripts",
+            ]
+            if tool == "verilator":
+                openocd_config = join(
+                    self.get_dir(),
+                    "misc",
+                    "openocd",
+                    board.get("debug.openocd_board", "swervolf_sim.cfg"),
+                )
+                server_args.extend(["-f", openocd_config])
+            elif debug.get("openocd_config"):
+                server_args.extend(["-f", debug.get("openocd_config")])
+            else:
+                assert debug.get("openocd_target"), (
+                    "Missing target configuration for %s" % board.id
+                )
+                # All tools are FTDI based
+                server_args.extend(
+                    [
+                        "-f",
+                        "interface/ftdi/%s.cfg" % tool,
+                        "-f",
+                        "target/%s.cfg" % debug.get("openocd_target"),
+                    ]
+                )
             debug["tools"][tool] = {
+                "init_cmds": [
+                    "define pio_reset_halt_target",
+                    "   monitor reset halt",
+                    "end",
+                    "define pio_reset_run_target",
+                    "   monitor reset",
+                    "end",
+                    "set mem inaccessible-by-default off",
+                    "set arch riscv:rv32",
+                    "set remotetimeout 250",
+                    "target extended-remote $DEBUG_PORT",
+                    "$INIT_BREAK",
+                    "$LOAD_CMDS",
+                ],
                 "server": {
-                    "package": "tool-openocd-riscv",
+                    "package": "tool-openocd-riscv-chipsalliance",
                     "executable": "bin/openocd",
                     "arguments": server_args,
                 },
-                "onboard": tool in debug.get("onboard_tools", []),
+                "onboard": tool in debug.get("onboard_tools", [])
+                or tool == "verilator",
             }
 
         board.manifest["debug"] = debug

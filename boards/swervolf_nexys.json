@@ -9,7 +9,7 @@
       ]
     ],
     "mabi": "ilp32",
-    "march": "rv32imac",
+    "march": "rv32i",
     "mcmodel": "medlow",
     "variant": "nexys_a7_swerv_eh1"
   },

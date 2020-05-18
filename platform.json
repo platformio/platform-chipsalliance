@@ -33,10 +33,14 @@
       "optional": false,
       "version": "~0.0.0"
     },
-    "tool-openocd-riscv": {
+    "tool-openocd-riscv-chipsalliance": {
       "optional": true,
       "type": "uploader",
-      "version": "~2.1000.0"
+      "version": "~1.1000.0"
+    },
+    "tool-verilator-swervolf": {
+      "type": "debugger",
+      "version": "~0.0.0"
     }
   }
 }
