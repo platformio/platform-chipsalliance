@@ -19,7 +19,7 @@
     ],
     "openocd_config": "swervolf_nexys_debug.cfg"
   },
-  "frameworks": [],
+  "frameworks": ["wd-riscv-sdk"],
   "name": "digilentincNexys A7",
   "upload": {
     "maximum_ram_size": 1216512,

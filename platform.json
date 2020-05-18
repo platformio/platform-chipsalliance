@@ -17,10 +17,21 @@
     "https://dl.bintray.com/platformio/dl-packages/manifest.json",
     "http://dl.platformio.org/packages/manifest.json"
   ],
+  "frameworks": {
+    "wd-riscv-sdk": {
+      "package": "framework-wd-riscv-sdk",
+      "script": "builder/frameworks/wd-riscv-sdk.py"
+    }
+  },
   "packages": {
     "toolchain-riscv": {
       "type": "toolchain",
       "version": "~1.80300.0"
+    },
+    "framework-wd-riscv-sdk": {
+      "type": "framework",
+      "optional": false,
+      "version": "~0.0.0"
     },
     "tool-openocd-riscv": {
       "optional": true,
