@@ -12,7 +12,9 @@ jobs:
         example: ["examples/native-blink_asm", "examples/rtosal-freertos"]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
+        with:
+          submodules: "recursive"
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v1
         with:
