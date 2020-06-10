@@ -91,6 +91,7 @@ def run_verilator(target, source, env):
 
 
 env = DefaultEnvironment()
+env.SConscript("compat.py", exports="env")
 platform = env.PioPlatform()
 board_config = env.BoardConfig()
 
@@ -162,82 +163,77 @@ env.AddPostAction(
 # Target: Print binary size
 #
 
-target_size = env.Alias(
-    "size", target_elf, env.VerboseAction("$SIZEPRINTCMD", "Calculating size $SOURCE")
+target_size = env.AddPlatformTarget(
+    "size",
+    target_elf,
+    env.VerboseAction("$SIZEPRINTCMD", "Calculating size $SOURCE"),
+    "Program Size",
+    "Calculate program size",
 )
-AlwaysBuild(target_size)
 
 #
 # Target: Program FPGA
 #
 
-if "program_fpga" in COMMAND_LINE_TARGETS:
-    # Note: there is a precompiled bitstream in framework-wd-riscv-sdk package
-    bitstream_file = os.path.abspath(
-        env.BoardConfig().get("build.bitstream_file", "swervolf_0.bit")
-    )
-    if not os.path.isfile(bitstream_file):
-        sys.stderr.write("Error: Couldn't find bitstream file.\n")
-        env.Exit(1)
+# Note: there is a precompiled bitstream in framework-wd-riscv-sdk package
+bitstream_file = os.path.abspath(
+    env.BoardConfig().get("build.bitstream_file", "swervolf_0.bit"))
 
-    program_fpga = env.Alias(
-        "program_fpga",
-        bitstream_file,
-        env.VerboseAction(
-            " ".join(
-                [
-                    '"%s"'
-                    % os.path.join(
-                        platform.get_package_dir("tool-openocd-riscv-chipsalliance")
-                        or "",
-                        "bin",
-                        "openocd",
-                    ),
-                    "-s",
-                    '"%s"'
-                    % os.path.join(
-                        env.PioPlatform().get_package_dir("framework-wd-riscv-sdk"),
-                        "board",
-                        env.BoardConfig().get("build.variant", ""),
-                    ),
-                    "-s",
-                    '"%s"'
-                    % os.path.join(
-                        platform.get_package_dir("tool-openocd-riscv-chipsalliance")
-                        or "",
-                        "share",
-                        "openocd",
-                        "scripts",
-                    ),
-                    "-f",
-                    "%s_program.cfg" % env.subst("$BOARD"),
-                    "-c",
-                    '"set BITFILE {$SOURCE}"',
-                ]
-            ),
-            "Programming bitstream $SOURCE",
+if "program_fpga" in COMMAND_LINE_TARGETS and not os.path.isfile(bitstream_file):
+    sys.stderr.write("Error: Couldn't find bitstream file.\n")
+    env.Exit(1)
+
+env.AddPlatformTarget(
+    "program_fpga",
+    bitstream_file,
+    env.VerboseAction(
+        " ".join(
+            [
+                '"%s"'
+                % os.path.join(
+                    platform.get_package_dir("tool-openocd-riscv-chipsalliance") or "",
+                    "bin",
+                    "openocd",
+                ),
+                "-s",
+                '"%s"'
+                % os.path.join(
+                    env.PioPlatform().get_package_dir("framework-wd-riscv-sdk"),
+                    "board",
+                    env.BoardConfig().get("build.variant", ""),
+                ),
+                "-s",
+                '"%s"'
+                % os.path.join(
+                    platform.get_package_dir("tool-openocd-riscv-chipsalliance") or "",
+                    "share",
+                    "openocd",
+                    "scripts",
+                ),
+                "-f",
+                "%s_program.cfg" % env.subst("$BOARD"),
+                "-c",
+                '"set BITFILE {$SOURCE}"',
+            ]
         ),
-    )
-
-    AlwaysBuild(program_fpga)
+        "Programming bitstream $SOURCE",
+    ),
+    "Upload Bitstream",
+)
 
 #
 # Target: Generate trace for GTKWave using Verilator
 #
 
-generate_trace = env.Alias(
-    "generate_trace",
-    target_vh,
-    env.VerboseAction(run_verilator, "Generating trace from Verilator"),
-)
+env.AddPlatformTarget("generate_trace", target_vh, env.VerboseAction(
+    run_verilator, "Generating trace from Verilator"), "Generate Trace")
 
-AlwaysBuild(generate_trace)
 
 #
 # Target: Run Verilator simulator to connect OpenOCD
 #
 
-start_verilator = env.Alias(
+env.AddPlatformTarget(
     "start_verilator",
     None,
     env.VerboseAction(
@@ -253,14 +249,17 @@ start_verilator = env.Alias(
         ),
         "Running Verilator",
     ),
+    "Start Verilator",
 )
 
-AlwaysBuild(start_verilator)
 
 #
 # Target: Generate bitstream
 #
 
+vivado_path = ""
+vivado_tcl_script = ""
+vivado_design_project = ""
 if "generate_bitstream" in COMMAND_LINE_TARGETS:
     vivado_path = WhereIs("vivado")
     if not vivado_path:
@@ -280,26 +279,22 @@ if "generate_bitstream" in COMMAND_LINE_TARGETS:
             sys.stderr.write("Error: Couldn't find  file %s\n" % f)
             env.Exit(1)
 
-    generate_bitstream = env.Alias(
-        "generate_bitstream",
-        None,
-        env.VerboseAction(
-            " ".join(
-                [
-                    vivado_path,
-                    "-notrace",
-                    "-mode",
-                    "batch",
-                    "-source",
-                    vivado_tcl_script,
-                    vivado_design_project,
-                ]
-            ),
-            "Generating bitstream from $SOURCES",
+env.AddPlatformTarget(
+    "generate_bitstream", None, env.VerboseAction(
+        " ".join(
+            [
+                vivado_path,
+                "-notrace",
+                "-mode",
+                "batch",
+                "-source",
+                vivado_tcl_script,
+                vivado_design_project,
+            ]
         ),
-    )
-
-    AlwaysBuild(generate_bitstream)
+        "Generating bitstream from $SOURCES",
+    ), "Generate Bitstream"
+)
 
 #
 # Target: Upload by default .bin file
@@ -341,7 +336,7 @@ elif upload_protocol == "custom":
 else:
     sys.stderr.write("Warning! Unknown upload protocol %s\n" % upload_protocol)
 
-AlwaysBuild(env.Alias("upload", upload_target, upload_actions))
+env.AddPlatformTarget("upload", upload_target, upload_actions, "Upload")
 
 
 #
