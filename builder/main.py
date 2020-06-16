@@ -210,10 +210,10 @@ env.AddPlatformTarget(
                     "openocd",
                     "scripts",
                 ),
-                "-f",
-                "%s_program.cfg" % env.subst("$BOARD"),
                 "-c",
                 '"set BITFILE {$SOURCE}"',
+                "-f",
+                "%s_program.cfg" % env.subst("$BOARD")
             ]
         ),
         "Programming bitstream $SOURCE",
