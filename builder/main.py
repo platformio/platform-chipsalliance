@@ -198,7 +198,7 @@ env.AddPlatformTarget(
                 "-s",
                 '"%s"'
                 % os.path.join(
-                    env.PioPlatform().get_package_dir("framework-wd-riscv-sdk"),
+                    platform.get_package_dir("framework-wd-riscv-sdk") or "",
                     "board",
                     env.BoardConfig().get("build.variant", ""),
                 ),
