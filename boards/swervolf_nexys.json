@@ -1,0 +1,34 @@
+{
+  "build": {
+    "f_cpu": "320000000L",
+    "extra_flags": "-DD_NEXYS_A7",
+    "hwids": [
+      [
+        "0x0403",
+        "0x6010"
+      ]
+    ],
+    "mabi": "ilp32",
+    "march": "rv32i",
+    "mcmodel": "medlow",
+    "variant": "nexys_a7_swerv_eh1"
+  },
+  "debug": {
+    "onboard_tools": [
+      "digilent-hs1"
+    ],
+    "openocd_config": "swervolf_nexys_debug.cfg"
+  },
+  "frameworks": ["wd-riscv-sdk"],
+  "name": "digilentincNexys A7",
+  "upload": {
+    "maximum_ram_size": 1216512,
+    "maximum_size": 16777216,
+    "protocols": [
+      "digilent-hs1"
+    ],
+    "protocol": "digilent-hs1"
+  },
+  "url": "https://reference.digilentinc.com/reference/programmable-logic/nexys-a7/start",
+  "vendor": "Digilent"
+}
