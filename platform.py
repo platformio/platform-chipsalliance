@@ -48,7 +48,7 @@ class ChipsalliancePlatform(PlatformBase):
             server_args = [
                 "-s",
                 join(
-                    self.get_package_dir("framework-wd-riscv-sdk"),
+                    self.get_package_dir("framework-wd-riscv-sdk") or "",
                     "board",
                     board.get("build.variant", ""),
                 ),
