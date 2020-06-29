@@ -254,6 +254,36 @@ env.AddPlatformTarget(
 
 
 #
+# Target: Run Whisper simulator to connect GDB
+#
+
+whisper_dir = os.path.join(platform.get_package_dir("framework-wd-riscv-sdk") or "", "board", "whisper")
+whisper_target = "$BUILD_DIR/${PROGNAME}.elf"
+whisper_configfile = os.path.join(whisper_dir,"whisper_eh1.json")
+whisper_cmd = "--gdb --gdb-tcp-port=3333 --configfile=%s %s" % (whisper_configfile,whisper_target)
+
+env.AddPlatformTarget(
+    "start_whisper",
+    None,
+    env.VerboseAction(
+        " ".join(
+            [
+                '"%s"'
+                % os.path.join(
+                    platform.get_package_dir("framework-wd-riscv-sdk") or "",
+                    "board",
+                    "whisper",	
+                    "whisper",
+                ),
+                whisper_cmd,
+            ]
+        ),
+        "Running Whisper",
+    ),
+    "Start Whisper",
+)
+
+#
 # Target: Generate bitstream
 #
 
