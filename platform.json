@@ -46,6 +46,7 @@
     },
     "tool-whisper": {
       "type": "debugger",
+      "optional": true,
       "version": "~1.477.0"
     }
   }

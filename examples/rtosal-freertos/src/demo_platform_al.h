@@ -24,7 +24,6 @@
 /**
 * include files
 */
-#include "psp_types.h"
 #include "psp_api.h"
 
 #ifdef D_HI_FIVE1
@@ -53,11 +52,7 @@
 /**
 * macros
 */
-#define M_ENDLESS_LOOP()   while(1) \
-                           { \
-                              asm volatile ("nop"); \
-                              asm volatile ("nop"); \
-                           }
+
 /**
 * types
 */
@@ -105,7 +100,7 @@ void demoPlatformInit(void);
 #ifdef D_HI_FIVE1
    void demoOutputMsg(const void *pStr, u32_t uiSize);
 #elif defined(D_NEXYS_A7)
-   #include "printf.h"
+   #include "bsp_printf.h"
    #define demoOutputMsg(f_,...)  printfNexys((f_), ##__VA_ARGS__)
 #else
    #define demoOutputMsg(f_,...)
