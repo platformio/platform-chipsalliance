@@ -26,10 +26,14 @@ env.Append(
         ("D_MTIME_ADDRESS", "0x80001020"),
         ("D_MTIMECMP_ADDRESS", "0x80001028"),
         ("D_CLOCK_RATE", 50000000),
-        ("D_PIC_BASE_ADDRESS", "0xA0000000"),
+        ("D_PIC_BASE_ADDRESS", "0xF00C0000"),
         ("D_PIC_NUM_OF_EXT_INTERRUPTS", 256),
         ("D_EXT_INTERRUPT_FIRST_SOURCE_USED", 0),
         ("D_EXT_INTERRUPT_LAST_SOURCE_USED", 255),
+        ("D_EXT_INTS_GENERATION_REG_ADDRESS", "0x8000100B"),
+        ("D_TIMER_DURATION_SETUP_ADDRESS", "0x80001030"),
+        ("D_TIMER_ACTIVATION_ADDRESS", "0x80001034"),
+        ("D_NMI_VEC_ADDRESSS", "0x8000100C")
     ],
 
     CPPPATH=[
@@ -38,9 +42,8 @@ env.Append(
         os.path.join(FIRMWARE_DIR, "common", "api_inc"),
         os.path.join(FIRMWARE_DIR, "rtos", "rtos_core", "freertos", "Source", "include"),
         os.path.join(FIRMWARE_DIR, "rtos", "rtosal", "api_inc"),
-        os.path.join(FIRMWARE_DIR, "rtos", "rtosal", "config", "swerv_eh1"),
-        os.path.join(FIRMWARE_DIR, "psp", "api_inc"),
-        os.path.join(FIRMWARE_DIR, "rtos", "rtos_core", "freertos", "Source", "include"),
+        os.path.join(FIRMWARE_DIR, "rtos", "rtosal", "config", "eh1"),
+        os.path.join(FIRMWARE_DIR, "psp", "api_inc")
     ],
 
     LIBPATH=[variant_dir],
@@ -90,11 +93,15 @@ libs.extend([
         os.path.join(FIRMWARE_DIR, "psp"),
         src_filter=[
             "-<*>",
-            "+<psp_ext_interrupts_swerv_eh1.c>",
-            "+<psp_traps_interrupts.c>",
-            "+<psp_timers.c>",
+            "+<psp_version.c>",
+            "+<psp_interrupts_eh1.c>",
+            "+<psp_ext_interrupts_eh1.c>",
+            "+<psp_timers_eh1.c>",
+            "+<psp_pmc_eh1.c>",
             "+<psp_performance_monitor_eh1.c>",
-            "+<psp_int_vect_swerv_eh1.S>"
+            "+<psp_nmi_eh1.c>",
+            "+<psp_corr_err_cnt_eh1.c>",
+            "+<psp_int_vect_eh1.S>"
         ],
     )
 ])

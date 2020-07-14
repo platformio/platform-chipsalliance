@@ -41,32 +41,13 @@ class ChipsalliancePlatform(PlatformBase):
             "olimex-arm-usb-ocd",
             "olimex-jtag-tiny",
             "verilator",
-            "whisper",
+            "whisper"
         )
         for tool in tools:
             if tool in debug["tools"]:
                 continue
-            if tool == "whisper":
-                debug['tools'][tool] = {
-                    "init_cmds": [
-                        "set arch riscv:rv32",
-                        "target extended-remote $DEBUG_PORT",
-                        "$INIT_BREAK",
-                        "$LOAD_CMDS",
-                    ],
-                    "server": {
-                        "package": "framework-wd-riscv-sdk",
-                        "arguments": [
-                            "--gdb",
-                            "--gdb-tcp-port=3333",
-                            "--configfile=$PACKAGE_DIR/board/whisper/whisper_eh1.json",
-                            "$PROJECT_DIR/.pio/build/swervolf_nexys/firmware.elf"
-                        ],
-                        "executable": "board/whisper/whisper"
-                    },
-                    "onboard": True
-                }
-                continue
+            server_executable = "bin/openocd"
+            server_package = "tool-openocd-riscv-chipsalliance"
             server_args = [
                 "-s",
                 join(
@@ -77,6 +58,14 @@ class ChipsalliancePlatform(PlatformBase):
                 "-s",
                 "$PACKAGE_DIR/share/openocd/scripts",
             ]
+            reset_cmds = [
+                "define pio_reset_halt_target",
+                "   monitor reset halt",
+                "end",
+                "define pio_reset_run_target",
+                "   monitor reset",
+                "end",
+            ]
             if tool == "verilator":
                 openocd_config = join(
                     self.get_dir(),
@@ -85,6 +74,21 @@ class ChipsalliancePlatform(PlatformBase):
                     board.get("debug.openocd_board", "swervolf_sim.cfg"),
                 )
                 server_args.extend(["-f", openocd_config])
+            elif tool == "whisper":
+                server_executable = "whisper"
+                server_package = "tool-whisper"
+                server_args = [
+                    "--gdb",
+                    "--gdb-tcp-port=3333",
+                    "--configfile=$PACKAGE_DIR/whisper_eh1.json",
+                    "$PROG_PATH"
+                ]
+                reset_cmds = [
+                    "define pio_reset_halt_target",
+                    "end",
+                    "define pio_reset_run_target",
+                    "end",
+                ]
             elif debug.get("openocd_config"):
                 server_args.extend(["-f", debug.get("openocd_config")])
             else:
@@ -101,13 +105,7 @@ class ChipsalliancePlatform(PlatformBase):
                     ]
                 )
             debug["tools"][tool] = {
-                "init_cmds": [
-                    "define pio_reset_halt_target",
-                    "   monitor reset halt",
-                    "end",
-                    "define pio_reset_run_target",
-                    "   monitor reset",
-                    "end",
+                "init_cmds": reset_cmds + [
                     "set mem inaccessible-by-default off",
                     "set arch riscv:rv32",
                     "set remotetimeout 250",
@@ -116,12 +114,12 @@ class ChipsalliancePlatform(PlatformBase):
                     "$LOAD_CMDS",
                 ],
                 "server": {
-                    "package": "tool-openocd-riscv-chipsalliance",
-                    "executable": "bin/openocd",
+                    "package": server_package,
+                    "executable": server_executable,
                     "arguments": server_args,
                 },
                 "onboard": tool in debug.get("onboard_tools", [])
-                or tool == "verilator",
+                or tool in ("verilator", "whisper"),
             }
 
         board.manifest["debug"] = debug

@@ -43,6 +43,10 @@
     "tool-verilator-swervolf": {
       "type": "debugger",
       "version": "~0.0.0"
+    },
+    "tool-whisper": {
+      "type": "debugger",
+      "version": "~1.477"
     }
   }
 }
