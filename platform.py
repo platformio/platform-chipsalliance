@@ -41,9 +41,31 @@ class ChipsalliancePlatform(PlatformBase):
             "olimex-arm-usb-ocd",
             "olimex-jtag-tiny",
             "verilator",
+            "whisper",
         )
         for tool in tools:
             if tool in debug["tools"]:
+                continue
+            if tool == "whisper":
+                debug['tools'][tool] = {
+                    "init_cmds": [
+                        "set arch riscv:rv32",
+                        "target extended-remote $DEBUG_PORT",
+                        "$INIT_BREAK",
+                        "$LOAD_CMDS",
+                    ],
+                    "server": {
+                        "package": "framework-wd-riscv-sdk",
+                        "arguments": [
+                            "--gdb",
+                            "--gdb-tcp-port=3333",
+                            "--configfile=$PACKAGE_DIR/board/whisper/whisper_eh1.json",
+                            "$PROJECT_DIR/.pio/build/swervolf_nexys/firmware.elf"
+                        ],
+                        "executable": "board/whisper/whisper"
+                    },
+                    "onboard": True
+                }
                 continue
             server_args = [
                 "-s",
