@@ -33,7 +33,7 @@
     "framework-wd-riscv-sdk": {
       "type": "framework",
       "optional": false,
-      "version": "~0.0.0"
+      "version": "0.0.0-alpha+sha.867768fd4d"
     },
     "tool-openocd-riscv-chipsalliance": {
       "optional": true,
@@ -47,7 +47,7 @@
     "tool-whisper": {
       "type": "debugger",
       "optional": true,
-      "version": "~1.477.0"
+      "version": "~1.540.0"
     }
   }
 }
