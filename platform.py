@@ -81,6 +81,9 @@ class ChipsalliancePlatform(PlatformBase):
                     "--gdb",
                     "--gdb-tcp-port=3333",
                     "--configfile=$PACKAGE_DIR/whisper_eh1.json",
+                    "--alarm=100",
+                    "--consoleio=0x80002000",
+                    "--counters",
                     "$PROG_PATH"
                 ]
                 reset_cmds = [
