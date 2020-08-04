@@ -23,6 +23,11 @@
       "description": "The WD Firmware package contains firmware applications and Processor Support Package (PSP) for various cores, alongside demos which support all features",
       "homepage": "https://github.com/westerndigitalcorporation/riscv-fw-infrastructure",
       "title": "WD-Firmware"
+    },
+    "freertos": {
+      "package": "framework-wd-riscv-sdk",
+      "script": "builder/frameworks/freertos.py",
+      "title": "FreeRTOS"
     }
   },
   "packages": {

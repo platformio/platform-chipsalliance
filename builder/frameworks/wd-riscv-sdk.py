@@ -19,8 +19,6 @@ env.Append(
     ],
 
     CPPDEFINES=[
-        "D_USE_RTOSAL",
-        "D_USE_FREERTOS",
         ("D_TICK_TIME_MS", 4),
         ("D_ISR_STACK_SIZE", 400),
         ("D_MTIME_ADDRESS", "0x80001020"),
@@ -38,11 +36,7 @@ env.Append(
 
     CPPPATH=[
         "$PROJECT_SRC_DIR",
-        os.path.join(FIRMWARE_DIR, "rtos", "rtosal", "loc_inc"),
         os.path.join(FIRMWARE_DIR, "common", "api_inc"),
-        os.path.join(FIRMWARE_DIR, "rtos", "rtos_core", "freertos", "Source", "include"),
-        os.path.join(FIRMWARE_DIR, "rtos", "rtosal", "api_inc"),
-        os.path.join(FIRMWARE_DIR, "rtos", "rtosal", "config", "eh1"),
         os.path.join(FIRMWARE_DIR, "psp", "api_inc")
     ],
 
@@ -51,8 +45,11 @@ env.Append(
     LIBS=["c", "gcc"]
 )
 
+if not any(rtos in env.subst("$PIOFRAMEWORK") for rtos in ("freertos", "threadx")):
+    env.Append(CPPDEFINES=["D_BARE_METAL"])
+
 # Only for C/C++ sources
-env.Append(CCFLAGS=["-include", "sys/cdefs.h"])
+env.Append(CCFLAGS=["-includesys/cdefs.h"])
 
 if not board.get("build.ldscript", ""):
     env.Replace(LDSCRIPT_PATH="link.lds")
@@ -67,27 +64,7 @@ if "build.variant" in board:
     env.Append(CPPPATH=[variant_dir, os.path.join(variant_dir, "bsp")])
     libs.append(env.BuildLibrary(os.path.join("$BUILD_DIR", "BoardBSP"), variant_dir))
 
-libs.extend([
-    env.BuildLibrary(
-        os.path.join("$BUILD_DIR", "FreeRTOS"),
-        os.path.join(FIRMWARE_DIR, "rtos", "rtos_core", "freertos", "Source"),
-        src_filter=[
-            "-<*>",
-            "+<croutine.c>",
-            "+<list.c>",
-            "+<portable/portASM.S>",
-            "+<queue.c>",
-            "+<tasks.c>",
-            "+<timers.c>",
-        ],
-    ),
-
-    env.BuildLibrary(
-        os.path.join("$BUILD_DIR", "RTOS-AL"),
-        os.path.join(FIRMWARE_DIR, "rtos", "rtosal"),
-        src_filter="+<*> -<rtosal_memory.c> -<list.c>",
-    ),
-
+libs.append(
     env.BuildLibrary(
         os.path.join("$BUILD_DIR", "PSP"),
         os.path.join(FIRMWARE_DIR, "psp"),
@@ -102,8 +79,8 @@ libs.extend([
             "+<psp_nmi_eh1.c>",
             "+<psp_corr_err_cnt_eh1.c>",
             "+<psp_int_vect_eh1.S>"
-        ],
+        ]
     )
-])
+)
 
 env.Prepend(LIBS=libs)
