@@ -4,6 +4,12 @@
   "description": "The CHIPS Alliance develops high-quality, open source hardware designs relevant to silicon devices and FPGAs.",
   "homepage": "https://chipsalliance.org",
   "license": "Apache-2.0",
+  "keywords": [
+      "dev-platform",
+      "Western Digital",
+      "Swerv",
+      "RISC-V"
+  ],
   "engines": {
     "platformio": "<5"
   },
