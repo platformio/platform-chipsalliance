@@ -60,9 +60,9 @@ def generate_disassembly(target, source, env):
             [
                 env.subst("$CC").replace("-gcc", "-objdump"),
                 "-d",
-                elf_file,
+                '"%s"' % elf_file,
                 ">",
-                elf_file.replace(".elf", ".dis"),
+                '"%s"' % elf_file.replace(".elf", ".dis"),
             ]
         )
     )
@@ -317,9 +317,10 @@ if upload_protocol in debug_tools:
     )
     openocd_args.extend(
         [
-            "-c",
-            "program {$SOURCE} %s verify; shutdown;"
-            % board_config.get("upload").get("flash_start", ""),
+            "-c", "load_image {$SOURCE} %s" % board_config.get(
+                "upload").get("image_offset", ""),
+            "-c", "reset run",
+            "-c", "shutdown"
         ]
     )
     env.Replace(
