@@ -51,8 +51,8 @@ env.Append(
         "-Wl,--wrap=times",
         "-Wl,--wrap=sbrk",
         "-Wl,--wrap=_exit",
-        "-Wl,-Map="
-        + os.path.join("$BUILD_DIR", os.path.basename(env.subst("${PROJECT_DIR}.map"))),
+        '-Wl,-Map="%s"' % os.path.join(
+            "$BUILD_DIR", os.path.basename(env.subst("${PROJECT_DIR}.map"))),
         "-Wl,--defsym=__comrv_cache_size=0",
     ]
 )
