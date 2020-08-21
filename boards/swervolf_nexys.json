@@ -20,7 +20,7 @@
     "openocd_config": "swervolf_nexys_eh1_debug.cfg"
   },
   "frameworks": ["wd-riscv-sdk", "freertos"],
-  "name": "Digilent Nexys A7",
+  "name": "RVfpga: Digilent Nexys A7",
   "upload": {
     "maximum_ram_size": 1216512,
     "maximum_size": 16777216,
