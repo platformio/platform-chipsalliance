@@ -5,10 +5,10 @@
   "homepage": "https://chipsalliance.org",
   "license": "Apache-2.0",
   "keywords": [
-      "dev-platform",
-      "Western Digital",
-      "Swerv",
-      "RISC-V"
+    "dev-platform",
+    "Western Digital",
+    "Swerv",
+    "RISC-V"
   ],
   "engines": {
     "platformio": "<5"
@@ -39,25 +39,30 @@
   "packages": {
     "toolchain-riscv": {
       "type": "toolchain",
+      "owner": "platformio",
       "version": "~1.80300.0"
     },
     "framework-wd-riscv-sdk": {
       "type": "framework",
       "optional": false,
+      "owner": "platformio",
       "version": "0.0.0-alpha+sha.867768fd4d"
     },
     "tool-openocd-riscv-chipsalliance": {
       "optional": true,
       "type": "uploader",
+      "owner": "platformio",
       "version": "~1.1000.0"
     },
     "tool-verilator-swervolf": {
       "type": "debugger",
+      "owner": "platformio",
       "version": "~0.0.0"
     },
     "tool-whisper": {
       "type": "debugger",
       "optional": true,
+      "owner": "platformio",
       "version": "~1.540.0"
     }
   }
