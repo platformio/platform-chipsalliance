@@ -60,9 +60,11 @@ class ChipsalliancePlatform(PlatformBase):
             ]
             reset_cmds = [
                 "define pio_reset_halt_target",
+                "   load",
                 "   monitor reset halt",
                 "end",
                 "define pio_reset_run_target",
+                "   load",
                 "   monitor reset",
                 "end",
             ]
