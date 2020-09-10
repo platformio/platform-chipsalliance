@@ -44,7 +44,13 @@ env.Append(
         env.BuildLibrary(
             os.path.join("$BUILD_DIR", "RTOS-AL"),
             os.path.join(FIRMWARE_DIR, "rtos", "rtosal"),
-            src_filter="+<*> -<rtosal_memory.c> -<list.c>"
+            src_filter=[
+                "+<*>",
+                "-<rtosal_memory.c>",
+                "-<list.c>",
+                "-<rtosal_int_vect_*.S>",
+                "+<rtosal_int_vect_eh1.S>"
+            ]
         ),
         env.BuildLibrary(
             os.path.join("$BUILD_DIR", "FreeRTOS"),
