@@ -1,7 +1,7 @@
 {
   "build": {
     "f_cpu": "320000000L",
-    "extra_flags": "-DD_NEXYS_A7",
+    "extra_flags": "-DD_NEXYS_A7 -DD_SWERV_EH1",
     "hwids": [
       [
         "0x0403",
@@ -9,18 +9,18 @@
       ]
     ],
     "mabi": "ilp32",
-    "march": "rv32i",
+    "march": "rv32imac",
     "mcmodel": "medlow",
-    "variant": "nexys_a7_swerv_eh1"
+    "variant": "nexys_a7_eh1"
   },
   "debug": {
     "onboard_tools": [
       "digilent-hs1"
     ],
-    "openocd_config": "swervolf_nexys_debug.cfg"
+    "openocd_config": "swervolf_nexys_eh1_debug.cfg"
   },
-  "frameworks": ["wd-riscv-sdk"],
-  "name": "Digilent Nexys A7",
+  "frameworks": ["wd-riscv-sdk", "freertos"],
+  "name": "RVfpga: Digilent Nexys A7",
   "upload": {
     "maximum_ram_size": 1216512,
     "maximum_size": 16777216,

@@ -26,11 +26,10 @@
 */
 #if defined(D_HI_FIVE1)
    #include <unistd.h>
-#elif defined(D_NEXYS_A7)
-   #include "printf.h"
-   #include "mem_map.h"
-   #include "version.h"
-   #include "psp_macros.h"
+#elif defined(D_SWERV_EH1) || defined(D_SWERV_EH2) ||defined(D_SWERV_EL2)
+   #include "bsp_printf.h"
+   #include "bsp_mem_map.h"
+   #include "bsp_version.h"
 #else
    PRE_COMPILED_MSG("no platform was defined")
 #endif
@@ -94,7 +93,7 @@ void demoUartInit(void)
 #ifdef D_HI_FIVE1
    /* Empty implementation */
 #endif
-#ifdef D_NEXYS_A7
+#ifdef D_SWERV_EH1
   swervolfVersion_t stSwervolfVersion;
 
   versionGetSwervolfVer(&stSwervolfVersion);
@@ -107,9 +106,13 @@ void demoUartInit(void)
   /* init uart */
   uartInit();
 
+
   printfNexys("------------------------------------------");
-  printfNexys("Hello from SweRV_EH1 core running on NexysA7  ");
-  printfNexys("Following: Demo RTOSAL on FreeRTOS kernel" );
+  printfNexys("Hello from SweRV core running on NexysA7  ");
+  printfNexys("Core list:");
+  printfNexys("\t EH1 = 11 ");
+  printfNexys("\t EL2 = 16 ");
+  printfNexys("Running demo on core %d...", M_PSP_READ_CSR(D_PSP_MARCHID_NUM));
   printfNexys("------------------------------------------");
   printfNexys("SweRVolf version %d.%d%d (SHA %08x) (dirty %d)",
                    stSwervolfVersion.ucMajor,
@@ -133,7 +136,7 @@ void demoPlatformInit(void)
 {
 #ifdef D_HI_FIVE1
   _init();
-#elif defined(D_NEXYS_A7)
+#elif defined(D_SWERV_EH1) || defined(D_SWERV_EH2) ||defined(D_SWERV_EL2)
   // Nada for now
 #endif
   /* init LED GPIO*/
@@ -183,7 +186,7 @@ void demoOutputToggelLed(void)
     default:
        break;
   }
-#elif defined(D_NEXYS_A7)
+#elif defined(D_SWERV_EH1) || defined(D_SWERV_EH2) ||defined(D_SWERV_EL2)
   demoOutpuLed(ucLedAct);
 #endif
 
@@ -199,8 +202,8 @@ void demoOutputToggelLed(void)
 * */
 void demoOutpuLed(const u08_t ucOnOffMode)
 {
-#ifdef D_NEXYS_A7
-  M_PSP_ASSERT(uiOnOffMode>1);
+#ifdef D_SWERV_EH1
+  M_PSP_ASSERT(ucOnOffMode>1);
   M_PSP_WRITE_REGISTER_32(D_LED_BASE_ADDRESS, ucOnOffMode);
 #endif
 }

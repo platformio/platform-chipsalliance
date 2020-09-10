@@ -2,48 +2,64 @@
   "name": "chipsalliance",
   "title": "CHIPS Alliance",
   "description": "The CHIPS Alliance develops high-quality, open source hardware designs relevant to silicon devices and FPGAs.",
-  "url": "https://chipsalliance.org",
-  "homepage": "http://platformio.org/platforms/chipsalliance",
+  "homepage": "https://chipsalliance.org",
   "license": "Apache-2.0",
+  "keywords": [
+    "dev-platform",
+    "Western Digital",
+    "Swerv",
+    "RISC-V"
+  ],
   "engines": {
-    "platformio": "<5"
+    "platformio": "^5"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/platformio/platform-chipsalliance.git"
   },
-  "version": "0.1.2",
-  "packageRepositories": [
-    "https://dl.bintray.com/platformio/dl-packages/manifest.json",
-    "http://dl.platformio.org/packages/manifest.json"
-  ],
+  "version": "1.0.0",
   "frameworks": {
     "wd-riscv-sdk": {
       "package": "framework-wd-riscv-sdk",
       "script": "builder/frameworks/wd-riscv-sdk.py",
       "description": "The WD Firmware package contains firmware applications and Processor Support Package (PSP) for various cores, alongside demos which support all features",
-      "url": "https://github.com/westerndigitalcorporation/riscv-fw-infrastructure",
+      "homepage": "https://github.com/westerndigitalcorporation/riscv-fw-infrastructure",
       "title": "WD-Firmware"
+    },
+    "freertos": {
+      "package": "framework-wd-riscv-sdk",
+      "script": "builder/frameworks/freertos.py",
+      "title": "FreeRTOS"
     }
   },
   "packages": {
     "toolchain-riscv": {
       "type": "toolchain",
+      "owner": "platformio",
       "version": "~1.80300.0"
     },
     "framework-wd-riscv-sdk": {
       "type": "framework",
       "optional": false,
-      "version": "~0.0.0"
+      "owner": "platformio",
+      "version": "0.0.0-alpha+sha.ca4b2392d8"
     },
     "tool-openocd-riscv-chipsalliance": {
       "optional": true,
       "type": "uploader",
+      "owner": "platformio",
       "version": "~1.1000.0"
     },
     "tool-verilator-swervolf": {
       "type": "debugger",
+      "owner": "platformio",
       "version": "~0.0.0"
+    },
+    "tool-whisper": {
+      "type": "debugger",
+      "optional": true,
+      "owner": "platformio",
+      "version": "~1.551.0"
     }
   }
 }
