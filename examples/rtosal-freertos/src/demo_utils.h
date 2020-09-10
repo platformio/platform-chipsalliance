@@ -1,6 +1,6 @@
 /*
 * SPDX-License-Identifier: Apache-2.0
-* Copyright 2019 Western Digital Corporation or its affiliates.
+* Copyright 2020 Western Digital Corporation or its affiliates.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -29,7 +29,6 @@
 /**
 * definitions
 */
-
 
 /**
 * macros
@@ -66,7 +65,8 @@
                                  asm volatile ("nop"); \
                               }
 
-
+/* Convert mSec duration to number of clock cycles */
+#define M_DEMO_MSEC_TO_CYCLES(duration)   (duration * (D_CLOCK_RATE / D_PSP_MSEC))
 
 /**
 * types
