@@ -42,7 +42,7 @@
       "type": "framework",
       "optional": false,
       "owner": "platformio",
-      "version": "0.0.0-alpha+sha.867768fd4d"
+      "version": "0.0.0-alpha+sha.ca4b2392d8"
     },
     "tool-openocd-riscv-chipsalliance": {
       "optional": true,
@@ -59,7 +59,7 @@
       "type": "debugger",
       "optional": true,
       "owner": "platformio",
-      "version": "~1.540.0"
+      "version": "~1.551.0"
     }
   }
 }
