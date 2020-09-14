@@ -45,7 +45,6 @@
       "version": "0.0.0-alpha+sha.ca4b2392d8"
     },
     "tool-openocd-riscv-chipsalliance": {
-      "optional": true,
       "type": "uploader",
       "owner": "platformio",
       "version": "~1.1000.0"
