@@ -71,8 +71,7 @@ def generate_disassembly(target, source, env):
 def run_verilator(target, source, env):
     trace_file = os.path.join(env.subst("$BUILD_DIR"), "trace.vcd")
     if os.path.isfile(trace_file):
-        print("Trace file %s already exists" % trace_file)
-        return
+        os.remove(trace_file)
 
     cmd = [
         os.path.join(
@@ -85,7 +84,7 @@ def run_verilator(target, source, env):
 
     p = subprocess.Popen(cmd, cwd=env.subst("$BUILD_DIR"))
 
-    # Wait for sometime while data is being collected
+    # Wait for some time while data is being collected
     time.sleep(3)
     p.terminate()
 
