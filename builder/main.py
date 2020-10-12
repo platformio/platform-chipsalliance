@@ -176,7 +176,7 @@ target_size = env.AddPlatformTarget(
 
 # Note: there is a precompiled bitstream in framework-wd-riscv-sdk package
 bitstream_file = os.path.abspath(
-    env.BoardConfig().get("build.bitstream_file", "swervolf_0.bit"))
+    board_config.get("build.bitstream_file", "swervolf_0.bit"))
 
 if "program_fpga" in COMMAND_LINE_TARGETS and not os.path.isfile(bitstream_file):
     sys.stderr.write("Error: Couldn't find bitstream file.\n")
@@ -199,7 +199,7 @@ env.AddPlatformTarget(
                 % os.path.join(
                     platform.get_package_dir("framework-wd-riscv-sdk") or "",
                     "board",
-                    env.BoardConfig().get("build.variant", ""),
+                    board_config.get("build.variant", ""),
                 ),
                 "-s",
                 '"%s"'
@@ -266,11 +266,11 @@ if "generate_bitstream" in COMMAND_LINE_TARGETS:
         env.Exit(1)
 
     vivado_tcl_script = os.path.abspath(
-        env.BoardConfig().get("build.swervolf_run_tc", "swervolf_0.6_run.tcl")
+        board_config.get("build.swervolf_run_tc", "swervolf_0.6_run.tcl")
     )
 
     vivado_design_project = os.path.abspath(
-        env.BoardConfig().get("build.swervolf_xpr", "swervolf_0.6.xpr")
+        board_config.get("build.swervolf_xpr", "swervolf_0.6.xpr")
     )
 
     for f in (vivado_tcl_script, vivado_design_project):
