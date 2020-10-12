@@ -76,7 +76,7 @@ def run_verilator(target, source, env):
     cmd = [
         os.path.join(
             platform.get_package_dir("tool-verilator-swervolf") or "",
-            "Vswervolf_core_tb",
+            env.BoardConfig().get("debug.verilator.binary", "Vswervolf_core_tb")
         ),
         "+ram_init_file=" + os.path.basename(source[0].get_path()),
         "+vcd=1",
@@ -241,7 +241,7 @@ env.AddPlatformTarget(
                 '"%s"'
                 % os.path.join(
                     platform.get_package_dir("tool-verilator-swervolf") or "",
-                    "Vswervolf_core_tb",
+                    board_config.get("debug.verilator.binary", "Vswervolf_core_tb"),
                 ),
                 "+jtag_vpi_enable=1",
             ]
