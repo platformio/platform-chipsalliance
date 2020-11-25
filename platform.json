@@ -58,7 +58,7 @@
       "type": "debugger",
       "optional": true,
       "owner": "platformio",
-      "version": "~1.551.0"
+      "version": "^1.0.0"
     }
   }
 }
