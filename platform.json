@@ -17,7 +17,7 @@
     "type": "git",
     "url": "https://github.com/platformio/platform-chipsalliance.git"
   },
-  "version": "1.0.2",
+  "version": "1.0.3",
   "frameworks": {
     "wd-riscv-sdk": {
       "package": "framework-wd-riscv-sdk",
@@ -58,7 +58,7 @@
       "type": "debugger",
       "optional": true,
       "owner": "platformio",
-      "version": "~1.551.0"
+      "version": "^1.0.0"
     }
   }
 }
