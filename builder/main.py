@@ -178,6 +178,9 @@ target_size = env.AddPlatformTarget(
 bitstream_file = os.path.abspath(
     board_config.get("build.bitstream_file", "swervolf_0.bit"))
 
+if not os.path.isfile(bitstream_file):
+    bitstream_file = os.path.join(platform.get_dir(), "misc", "bitstream", "rvfpga.bit")
+
 if "program_fpga" in COMMAND_LINE_TARGETS and not os.path.isfile(bitstream_file):
     sys.stderr.write("Error: Couldn't find bitstream file.\n")
     env.Exit(1)
