@@ -134,12 +134,22 @@ env.Append(
     )
 )
 
-if not env.get("PIOFRAMEWORK"):
+pioframework = env.get("PIOFRAMEWORK", [])
+
+if not pioframework:
     env.SConscript("frameworks/_bare.py", exports="env")
 
 #
 # Target: Build executable and linkable firmware
 #
+
+
+if "zephyr" in pioframework:
+    env.SConscript(
+        os.path.join(platform.get_package_dir(
+            "framework-zephyr"), "scripts", "platformio", "platformio-build-pre.py"),
+        exports={"env": env}
+    )
 
 target_elf = None
 if "nobuild" in COMMAND_LINE_TARGETS:
