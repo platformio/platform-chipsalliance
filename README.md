@@ -1,7 +1,7 @@
 # CHIPS Alliance: development platform for [PlatformIO](http://platformio.org)
 
-![alt text](https://github.com/platformio/platform-chipsalliance/workflows/Examples/badge.svg "CHIPS Alliance development platform")
-    
+[![Build Status](https://github.com/platformio/platform-chipsalliance/workflows/Examples/badge.svg)](https://github.com/platformio/platform-chipsalliance/actions)
+
 CHIPS Alliance brings the power of open source and software automation to the semiconductor industry, making it possible to develop new hardware faster and more affordably than ever before.
 
 * [Home](http://platformio.org/platforms/chipsalliance) (home page in PlatformIO Platform Registry)
