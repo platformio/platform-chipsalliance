@@ -160,6 +160,7 @@ else:
     target_elf = env.BuildProgram()
     target_bin = env.ElfToBin(os.path.join("$BUILD_DIR", "${PROGNAME}"), target_elf)
     target_vh = env.BinToVh(os.path.join("$BUILD_DIR", "${PROGNAME}"), target_bin)
+    env.Depends(target_bin, "checkprogsize")
 
 AlwaysBuild(env.Alias("nobuild", target_bin))
 target_buildprog = env.Alias("buildprog", target_bin, target_bin)
