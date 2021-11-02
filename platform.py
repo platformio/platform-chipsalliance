@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from os.path import join
+import os
 
 from platformio.managers.platform import PlatformBase
 from platformio.util import get_systype
@@ -66,7 +66,7 @@ class ChipsalliancePlatform(PlatformBase):
             server_package = "tool-openocd-riscv-chipsalliance"
             server_args = [
                 "-s",
-                join(
+                os.path.join(
                     self.get_package_dir("framework-wd-riscv-sdk") or "",
                     "board",
                     board.get("build.variant", ""),
@@ -85,7 +85,7 @@ class ChipsalliancePlatform(PlatformBase):
                 "end",
             ]
             if tool == "verilator":
-                openocd_config = join(
+                openocd_config = os.path.join(
                     self.get_dir(),
                     "misc",
                     "openocd",
