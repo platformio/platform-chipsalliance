@@ -330,9 +330,10 @@ if upload_protocol in debug_tools:
     )
     openocd_args.extend(
         [
-            "-c", "load_image {$SOURCE} %s" % board_config.get(
-                "upload").get("image_offset", ""),
-            "-c", "reset run",
+            "-c", "reset halt",
+            "-c", "load_image {$SOURCE} %s elf" % board_config.get(
+                "upload").get("image_offset", "0x0"),
+            "-c", "resume %s" % board_config.get("upload").get("image_offset", "0x0"),
             "-c", "shutdown"
         ]
     )
