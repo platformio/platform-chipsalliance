@@ -150,6 +150,7 @@ else:
     target_elf = env.BuildProgram()
     target_bin = env.ElfToBin(os.path.join("$BUILD_DIR", "${PROGNAME}"), target_elf)
     target_vh = env.BinToVh(os.path.join("$BUILD_DIR", "${PROGNAME}"), target_bin)
+    env.Depends(target_bin, "checkprogsize")
 
 AlwaysBuild(env.Alias("nobuild", target_bin))
 target_buildprog = env.Alias("buildprog", target_bin, target_bin)
@@ -177,6 +178,9 @@ target_size = env.AddPlatformTarget(
 # Note: there is a precompiled bitstream in framework-wd-riscv-sdk package
 bitstream_file = os.path.abspath(
     board_config.get("build.bitstream_file", "swervolf_0.bit"))
+
+if not os.path.isfile(bitstream_file):
+    bitstream_file = os.path.join(platform.get_dir(), "misc", "bitstream", "rvfpga.bit")
 
 if "program_fpga" in COMMAND_LINE_TARGETS and not os.path.isfile(bitstream_file):
     sys.stderr.write("Error: Couldn't find bitstream file.\n")
@@ -316,9 +320,10 @@ if upload_protocol in debug_tools:
     )
     openocd_args.extend(
         [
-            "-c", "load_image {$SOURCE} %s" % board_config.get(
-                "upload").get("image_offset", ""),
-            "-c", "reset run",
+            "-c", "reset halt",
+            "-c", "load_image {$SOURCE} %s elf" % board_config.get(
+                "upload").get("image_offset", "0x0"),
+            "-c", "resume %s" % board_config.get("upload").get("image_offset", "0x0"),
             "-c", "shutdown"
         ]
     )

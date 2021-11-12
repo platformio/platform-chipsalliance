@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from os.path import join
+import os
 
 from platformio.managers.platform import PlatformBase
 
@@ -50,7 +50,7 @@ class ChipsalliancePlatform(PlatformBase):
             server_package = "tool-openocd-riscv-chipsalliance"
             server_args = [
                 "-s",
-                join(
+                os.path.join(
                     self.get_package_dir("framework-wd-riscv-sdk") or "",
                     "board",
                     board.get("build.variant", ""),
@@ -69,7 +69,7 @@ class ChipsalliancePlatform(PlatformBase):
                 "end",
             ]
             if tool == "verilator":
-                openocd_config = join(
+                openocd_config = os.path.join(
                     self.get_dir(),
                     "misc",
                     "openocd",
@@ -94,7 +94,7 @@ class ChipsalliancePlatform(PlatformBase):
                     "define pio_reset_run_target",
                     "end",
                 ]
-            elif debug.get("openocd_config"):
+            elif debug.get("openocd_config", ""):
                 server_args.extend(["-f", debug.get("openocd_config")])
             else:
                 assert debug.get("openocd_target"), (
@@ -129,3 +129,16 @@ class ChipsalliancePlatform(PlatformBase):
 
         board.manifest["debug"] = debug
         return board
+
+    def configure_debug_options(self, initial_debug_options, ide_data):
+        debug_options = copy.deepcopy(initial_debug_options)
+        adapter_speed = initial_debug_options.get("speed")
+        if adapter_speed:
+            server_options = debug_options.get("server") or {}
+            server_executable = server_options.get("executable", "").lower()
+            if "openocd" in server_executable:
+                debug_options["server"]["arguments"].extend(
+                    ["-c", "adapter speed %s" % adapter_speed]
+                )
+
+        return debug_options

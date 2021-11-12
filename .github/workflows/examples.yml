@@ -7,13 +7,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-16.04, windows-latest, macos-latest]
-        python-version: [2.7, 3.7]
+        os: [ubuntu-18.04, windows-latest, macos-latest]
+        python-version: [3.7]
         example:
           - "examples/native-asm"
           - "examples/native-bare_c"
           - "examples/psp-hello-world"
           - "examples/rtosal-freertos"
+          # - "examples/zephyr-hello-world"
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
