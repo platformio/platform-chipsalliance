@@ -11,10 +11,7 @@
     "mabi": "ilp32",
     "march": "rv32imac",
     "mcmodel": "medlow",
-    "variant": "nexys_a7_eh1",
-    "zephyr": {
-       "variant": "swervolf_nexys"
-    }
+    "variant": "nexys_a7_eh1"
   },
   "debug": {
     "onboard_tools": [
@@ -22,11 +19,7 @@
     ],
     "openocd_config": "swervolf_nexys_eh1_debug.cfg"
   },
-  "frameworks": [
-    "wd-riscv-sdk",
-    "freertos",
-    "zephyr"
-  ],
+  "frameworks": ["wd-riscv-sdk", "freertos"],
   "name": "RVfpga: Digilent Nexys A7",
   "upload": {
     "maximum_ram_size": 1216512,
