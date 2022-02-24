@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import os
+import copy
 
 from platformio.managers.platform import PlatformBase
 
