@@ -14,18 +14,18 @@
 
 import os
 
-from platformio.managers.platform import PlatformBase
+from platformio.public import PlatformBase
 
 
 class ChipsalliancePlatform(PlatformBase):
     def get_boards(self, id_=None):
-        result = PlatformBase.get_boards(self, id_)
+        result = super().get_boards(id_)
         if not result:
             return result
         if id_:
             return self._add_default_debug_tools(result)
         else:
-            for key, value in result.items():
+            for key in result:
                 result[key] = self._add_default_debug_tools(result[key])
         return result
 
