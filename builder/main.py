@@ -90,7 +90,6 @@ def run_verilator(target, source, env):
 
 
 env = DefaultEnvironment()
-env.SConscript("compat.py", exports="env")
 platform = env.PioPlatform()
 board_config = env.BoardConfig()
 

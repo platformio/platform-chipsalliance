@@ -1,5 +1,6 @@
 {
   "name": "chipsalliance",
+  "version": "1.2.0",
   "title": "CHIPS Alliance",
   "description": "The CHIPS Alliance develops high-quality, open source hardware designs relevant to silicon devices and FPGAs.",
   "homepage": "https://chipsalliance.org",
@@ -11,13 +12,12 @@
     "RISC-V"
   ],
   "engines": {
-    "platformio": "^5"
+    "platformio": "^6"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/platformio/platform-chipsalliance.git"
   },
-  "version": "1.1.0",
   "frameworks": {
     "wd-riscv-sdk": {
       "package": "framework-wd-riscv-sdk",

@@ -8,8 +8,11 @@ board = env.BoardConfig()
 
 env.Append(
     ASFLAGS=[
+        "-march=%s" % board.get("build.march"),
+        "-mabi=%s" % board.get("build.mabi"),
+    ],
+    ASPPFLAGS=[
         "-x", "assembler-with-cpp",
-        "-Wa,-march=%s" % board.get("build.march")
     ],
 
     CCFLAGS=[
@@ -56,10 +59,3 @@ env.Append(
         "-Wl,--defsym=__comrv_cache_size=0",
     ]
 )
-
-# copy CCFLAGS to ASFLAGS (-x assembler-with-cpp mode)
-env.Append(ASFLAGS=env.get("CCFLAGS", [])[:])
-
-#
-# Target: Build libraries
-#
