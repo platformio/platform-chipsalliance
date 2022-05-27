@@ -1,4 +1,4 @@
-# CHIPS Alliance: development platform for [PlatformIO](http://platformio.org)
+# CHIPS Alliance: development platform for [PlatformIO](https://platformio.org)
 
 [![Build Status](https://github.com/platformio/platform-chipsalliance/workflows/Examples/badge.svg)](https://github.com/platformio/platform-chipsalliance/actions)
 
@@ -9,7 +9,7 @@ CHIPS Alliance brings the power of open source and software automation to the se
 
 # Usage
 
-1. [Install PlatformIO](http://platformio.org)
+1. [Install PlatformIO](https://platformio.org)
 2. Create PlatformIO project and configure a platform option in [platformio.ini](https://docs.platformio.org/page/projectconf.html) file:
 
 ## Stable version
