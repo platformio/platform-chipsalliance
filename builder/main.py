@@ -213,7 +213,7 @@ env.AddPlatformTarget(
                     "scripts",
                 ),
                 "-c",
-                '"set BITFILE {$SOURCE}"',
+                '"set BITFILE {"$SOURCE"}"',
                 "-f",
                 "%s_program.cfg" % env.subst("$BOARD")
             ]
