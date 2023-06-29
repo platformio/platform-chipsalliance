@@ -124,7 +124,6 @@ class ChipsalliancePlatform(PlatformBase):
                     "arguments": server_args,
                 },
                 "onboard": tool in debug.get("onboard_tools", [])
-                or tool in ("verilator", "whisper"),
             }
 
         board.manifest["debug"] = debug
