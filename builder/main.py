@@ -89,6 +89,15 @@ def run_verilator(target, source, env):
     p.terminate()
 
 
+def run_RVfpgaViDBoPipeline(target, source, env):
+    cmd = [
+        env.BoardConfig().get("debug.verilator.binary"),
+        "+ram_init_file=" + os.path.basename(source[0].get_path())
+    ]
+
+    p = subprocess.run(cmd, cwd=env.subst("$BUILD_DIR"))
+
+
 env = DefaultEnvironment()
 platform = env.PioPlatform()
 board_config = env.BoardConfig()
@@ -229,6 +238,14 @@ env.AddPlatformTarget(
 
 env.AddPlatformTarget("generate_trace", target_vh, env.VerboseAction(
     run_verilator, "Generating trace from Verilator"), "Generate Trace")
+
+
+#
+# Target: Run RVfpga-ViDBo/PipelineSimulator
+#
+
+env.AddPlatformTarget("ViDBo", target_vh, env.VerboseAction(
+    run_RVfpgaViDBoPipeline, "Running Program in RVfpga-ViDBo or RVfpga-PipelineSimulator"), "RVfpga-ViDBo/Pipeline")
 
 
 #
